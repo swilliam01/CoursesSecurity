@@ -17,6 +17,7 @@ public class SSUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
     public SSUserDetailsService(UserRepository userRepository){
+
         this.userRepository=userRepository;
     }
     @Override

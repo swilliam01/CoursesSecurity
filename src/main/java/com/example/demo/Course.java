@@ -30,6 +30,8 @@ public class Course {
   @Min(3)
   private int credit;
 
+  public Course() {
+  }
   public long getId() {
     return id;
   }

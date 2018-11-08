@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
+<div th:replace="base :: navlinks"></div>
     <a href="/">Show all Courses</a><br/>
 
     Title: <span th:text="${course.title}"></span><br/>

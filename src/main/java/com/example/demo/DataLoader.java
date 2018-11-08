@@ -25,6 +25,7 @@ public class DataLoader implements CommandLineRunner {
         Role adminRole = roleRepository.findByRole("ADMIN");
         Role userRole = roleRepository.findByRole("USER");
 
+
         User user = new User("jim@jim.com","password","Jim","Jimmerson",true,"jim");
         user.setRoles(Arrays.asList(userRole));
         userRepository.save(user);

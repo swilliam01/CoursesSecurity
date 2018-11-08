@@ -2,12 +2,13 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -19,16 +20,20 @@ public class HomeController {
 
 
   @Autowired
-  private UserService userService;
+  UserService userService;
+
+  @Autowired
+  UserRepository userRepository;
 
 
-    @RequestMapping("/secure")
-    public String secure(Principal principal, Model model){
-        User myuser =((CustomUserDetails)((UsernamePasswordAuthenticationToken)principal)
-                .getPrincipal()).getUser();
-        model.addAttribute("myuser",myuser);
-        return "secure";
-    }
+
+//    @RequestMapping("/secure")
+//    public String secure(Principal principal, Model model){
+//        User myuser =((CustomUserDetails)((UsernamePasswordAuthenticationToken)principal)
+//                .getPrincipal()).getUser();
+//        model.addAttribute("myuser",myuser);
+//        return "secure";
+//    }
 
     @RequestMapping("/")
     public String listCourses(Model model){
@@ -75,9 +80,8 @@ public class HomeController {
     if(result.hasErrors()){
       return "courseform";
     }
-
     courseRepository.save(course);
-    return "redirect:/";
+      return "redirect:/";
   }
 
   @RequestMapping("/detail/{id}")
@@ -97,4 +101,13 @@ public class HomeController {
     courseRepository.deleteById(id);
     return "redirect:/";
   }
+
+  protected User getUser(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentUsername = authentication.getName();
+    User user = userRepository.findByUsername(currentUsername);
+
+    return user;
+  }
+
 }

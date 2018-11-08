@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <th:block th:insert="base :: header"></th:block>
+
 </head>
 <body>
-<a href="/add">Add a course</a><br/>
-
+<div th:replace="base :: navlinks"></div>
+<!--<div sec:authorize="!isAuthenticated()">-->
+    <!--<a href="/login">Login</a><br/>-->
+<!--</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+    <!--<a href="/add">Add a course</a><br/>-->
+<!--</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+    <!--<a th:action="@{/secure}">-->
+    <!--</a>-->
+<!--</div>-->
 <table>
         <tr>
             <th>Title</th>
@@ -24,7 +36,7 @@
                 <a th:href="@{/detail/{id}(id=${course.id})}">Details</a> -
                 <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
                 </div>
-                <div sec:authorize="hasAuthority('USER')">
+                <div sec:authorize="hasAuthority('user')">
                     <a th:href="@{/update/{id}(id=${course.id})}">Update</a> -
                     <a th:href="@{/detail/{id}(id=${course.id})}">Details</a> -
                     <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
@@ -32,6 +44,9 @@
             </td>
         </tr>
     </table>
+<div sec:authorize="!isAuthenticated()">
+    <a href="/register">Get Register</a>
+</div>
 <div sec:authorize="isAuthenticated()">
     <a href="/logout">Logout</a>
 </div>

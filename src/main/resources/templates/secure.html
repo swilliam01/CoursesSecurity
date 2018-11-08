@@ -8,8 +8,51 @@
 
 </head>
 <body>
-<h4>Courses To Add</h4>
-<a href="/login">Login</a><br/>
+<h3>Welcome</h3>
+<p th:text="${myuser.firstname}"></p><br/>
+
+<div sec:authorize="!isAuthenticated()">
+    <a href="/login">Login</a><br/>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <a href="/add">Add a course</a><br/>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <a th:action="@{/secure}">
+    </a>
+</div>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Instructor</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="course : ${courses}">
+        <td th:text="${course.title}"></td>
+        <td th:text="${course.instructor}"></td>
+        <td th:text="${course.credit}"></td>
+        <td>
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/update/{id}(id=${course.id})}">Update</a> -
+                <a th:href="@{/detail/{id}(id=${course.id})}">Details</a> -
+                <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
+            </div>
+            <div sec:authorize="hasAuthority('USER')">
+                <a th:href="@{/update/{id}(id=${course.id})}">Update</a> -
+                <a th:href="@{/detail/{id}(id=${course.id})}">Details</a> -
+                <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
+            </div>
+        </td>
+    </tr>
+</table>
+<div sec:authorize="!isAuthenticated()">
+    <a href="/register">Get Register</a>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <a href="/logout">Logout</a>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
